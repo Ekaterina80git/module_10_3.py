@@ -8,33 +8,24 @@ class Bank:
     def __init__(self):
         self.balance = 0
         self.lock = threading.Lock()
-        self.count = 0
-        self.transaction = 100
 
     def deposit(self):
-        for i in range(self.transaction):
-            self.count += 1
-            amount = random.randint(50,500)
+        for i in range(100):
             if self.balance >= 500 and self.lock.locked():
                self.lock.release()
-            elif self.balance < 500 and self.lock.locked():
-                self.lock.release()
-                self.balance += amount
-                self.lock.acquire()
-            else:
-                self.balance += amount
-            print(f'Пополнение: {amount}. Баланс: {self.balance}.')
+            x = random.randint(50, 500)
+            self.balance += x
+            print(f'Пополнение: {x}. Баланс: {self.balance}.')
             time.sleep(0.001)
 
     def take(self):
-        for i in range(self.transaction):
-            amount = random.randint(50, 500)
-            print(f'Запрос на {amount}')
-            self.lock.acquire()
-            if amount <= self.balance:
-                self.balance -= amount
-                print(f'Снятие: {amount}. Баланс: {self.balance}.')
-            elif amount > self.balance:
+        for i in range(100):
+            y = random.randint(50, 500)
+            print(f'Запрос на {y}')
+            if self.balance >= y:
+                self.balance -= y
+                print(f'Снятие: {y}. Баланс: {self.balance}.')
+            else:
                 print('Запрос отклонён, недостаточно средств')
                 self.lock.acquire()
             time.sleep(0.001)
